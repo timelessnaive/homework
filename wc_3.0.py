@@ -100,6 +100,8 @@ def work():
         error="存在不支持的编码类型"
         te.insert("end", error)
 
+def clear():
+    te.delete(1.0, tk.END)
 
 out = ""
 window = tk.Tk()
@@ -111,6 +113,9 @@ inp.pack()
 
 b1 = tk.Button(window,text="查询",width=15,height=2,command=work)
 b1.pack()
+
+b2=tk.Button(window,text="清除",width=15,height=2,command=clear)
+b2.pack()
 
 var=tk.StringVar()
 var.set("")
