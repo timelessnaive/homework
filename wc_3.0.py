@@ -28,7 +28,8 @@ def lineis(line):
     elif(c<=1):
         return 1
 def output(path,mode):
-    global out
+
+    re=""
     num = [0]
     num *= 10
     try:
@@ -44,21 +45,25 @@ def output(path,mode):
             line = f.readline()
         f.close()
         if (mode[0]):
-            out += "共有" + str(num[0]) + "个字符\n"
+            re += "共有" + str(num[0]) + "个字符\n"
         if (mode[1]):
-            out += "共有" + str(num[1]) + "个单词\n"
+            re += "共有" + str(num[1]) + "个单词\n"
         if (mode[2]):
-            out += "共有" + str(num[2]) + "个句子(bug)\n"
+            re += "共有" + str(num[2]) + "个句子\n"
         if (mode[3]):
-            out += "共有" + str(num[3]) + "个空行," + str(num[4]) + "个代码行," + str(num[5]) + "个注释行\n"
-        print("output", out)
-        return out
+            re += "共有" + str(num[3]) + "个空行," + str(num[4]) + "个代码行," + str(num[5]) + "个注释行\n"
+        print("re", re)
+        return re
     except IOError:
-        out="找不到文件"
+        te.delete(1.0, tk.END)
+        error="找不到文件"
+        te.insert("end", error)
     except UnicodeDecodeError:
-        out="存在不支持的编码类型"
-    var.set(out)
+        te.delete(1.0, tk.END)
+        error="存在不支持的编码类型"
+        te.insert("end", error)
 def work():
+    te.delete(1.0, tk.END)
     path=inp.get()
     global out
     # num[0] char; num[1] word; num[2] line;3 空行 4 代码行 5 注释行
@@ -77,33 +82,40 @@ def work():
                 for fle in files:
                     f_path = root + "\\" + fle
                     key = f_path[sfind(f_path, ".") + 1:]
-                    if (key == "txt" or key == "c" or key == "cpp"):
+                    if (key == "txt" or key == "c" or key == "cpp" or key == "h"):
                         # print("output(f_path, mode)",output(f_path, mode))
                         out = f_path + "\n" + output(f_path, mode)
+                        te.insert("end", out)
         else:
             out = output(path, mode)
-        var.set(out)
+            te.insert("end", out)
+        print(out)
         out = ""
     except IndexError:
-        out="请输入正确的格式"
+        te.delete(1.0, tk.END)
+        error="请输入正确的格式"
+        te.insert("end", error)
     except TypeError:
-        out="存在不支持的编码类型"
-        var.set(out)
+        te.delete(1.0, tk.END)
+        error="存在不支持的编码类型"
+        te.insert("end", error)
 
-out=""
-window=tk.Tk()
+
+out = ""
+window = tk.Tk()
 window.title("window")
 window.geometry("500x500")
 
-inp=tk.Entry(window)
+inp = tk.Entry(window)
 inp.pack()
 
-b1=tk.Button(window,text="查询",width=15,height=2,command=work)
+b1 = tk.Button(window,text="查询",width=15,height=2,command=work)
 b1.pack()
 
 var=tk.StringVar()
 var.set("")
-label=tk.Label(window,textvariable=var,bg='white',font='Arial,40',width=40,height=10)
-label.pack()
+te=tk.Text(window,height=20)
+te.pack()
+
 
 window.mainloop()
