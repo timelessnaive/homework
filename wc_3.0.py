@@ -63,8 +63,10 @@ def output(path,mode):
         error="存在不支持的编码类型"
         te.insert("end", error)
 def work():
+    global go_path
     te.delete(1.0, tk.END)
     path=inp.get()
+    #path="-s -l -c -w -a D:\ACM\ACM\test"
     global out
     # num[0] char; num[1] word; num[2] line;3 空行 4 代码行 5 注释行
     mode = [0]
@@ -77,6 +79,7 @@ def work():
                 mode[j] = 1
             j += 1
         path = path[sfind(path, " ") + 1:].strip()
+        go_path=path
         if (mode[4]):
             for root, dirs, files in os.walk(path):
                 for fle in files:
@@ -99,13 +102,16 @@ def work():
         te.delete(1.0, tk.END)
         error="存在不支持的编码类型"
         te.insert("end", error)
-
 def clear():
     te.delete(1.0, tk.END)
+def go():
+    global go_path
+    path=go_path
+    os.system("explorer.exe %s" % path)
 
 out = ""
 window = tk.Tk()
-window.title("window")
+window.title("Word Counter")
 window.geometry("500x500")
 
 inp = tk.Entry(window)
@@ -119,8 +125,11 @@ b2.pack()
 
 var=tk.StringVar()
 var.set("")
+
 te=tk.Text(window,height=20)
 te.pack()
 
+b3=tk.Button(window,text="打开文件或所在目录",width=15,height=2,command=go)
+b3.pack()
 
 window.mainloop()
