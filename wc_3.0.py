@@ -106,8 +106,13 @@ def clear():
     te.delete(1.0, tk.END)
 def go():
     global go_path
-    path=go_path
-    os.system("explorer.exe %s" % path)
+    try:
+        path=go_path
+        os.system("explorer.exe %s" % path)
+    except NameError:
+        te.delete(1.0, tk.END)
+        error="请输入文件路径"
+        te.insert("end", error)
 
 out = ""
 window = tk.Tk()
